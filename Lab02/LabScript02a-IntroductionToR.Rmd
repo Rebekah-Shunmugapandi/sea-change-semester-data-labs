@@ -1,8 +1,8 @@
 ---
 title: "Lab 2 A: Introduction to R"
 output: 
-  html_notebook: default
   github_document: default
+  html_notebook: default
 ---
 
 # R and RStudio
@@ -37,9 +37,8 @@ Note: it's the start of an online tutorial, so it does mention a "code handout" 
 
 The above instructions for installing R installs the **base** version of R. It has a bunch of default functions we can use. But there a lot of additional **packages** for R which contain even more functions for us to use. 
 
-```{r}
-install.packages('tidyverse')
-```
+`install.packages("tidyverse")`
+
 
 ## Saving your work: using scripts
 
