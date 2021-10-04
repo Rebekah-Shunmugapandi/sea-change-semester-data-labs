@@ -1,8 +1,8 @@
 ---
 title: "Lab 2 A: Introduction to R"
 output: 
-  github_document: default
   html_notebook: default
+  github_document: default
 ---
 
 # R and RStudio
