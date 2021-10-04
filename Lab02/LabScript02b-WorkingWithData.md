@@ -28,21 +28,28 @@ Before we import the data into R, we need to make it R friendly.
 3.  Open DaRTS\_cruise\_data\_2012-2020 – 20201103.xlsx
 4.  Go to the “CTD all years” sheet
 
-If you opened the file in Excel: 3. Go to “File” -&gt; “Save As” and
-select to save the file as a “CSV (Comma delimited)” file named
-DaRTS\_CTD\_data (selecting “yes”" to the windows that pop up) 4. Exit
-the Excel file (selecting “no” you don’t want to save changes if asked.)
-5. Open the csv file you just created in Excel (the easiest way to do
-this is open Excel, then do “File” -&gt; “Open” -&gt; “Browse”, then
-navigate to the file and select “Open”)
+If you opened the file in Excel:
 
-If you opened the file in Numbers: 1. Go to “File” -&gt; “Export To”
--&gt; CSV 2. Check the box that says “Create a file for every table”.
-You are going to create a CSV file for every sheet (table) in the file.
-You will be asked to name the folder all the CSV files will be saved in
-- pick something sensible! 3. Once saved, exit the numbers file. 3. Copy
-the CSV file for the “CTD all years” sheet to your labs folder
-directory. 5. Open the csv file you just created.
+3.  Go to “File” -&gt; “Save As” and select to save the file as a “CSV
+    (Comma delimited)” file named DaRTS\_CTD\_data (selecting “yes”" to
+    the windows that pop up)
+4.  Exit the Excel file (selecting “no” you don’t want to save changes
+    if asked.)
+5.  Open the csv file you just created in Excel (the easiest way to do
+    this is open Excel, then do “File” -&gt; “Open” -&gt; “Browse”, then
+    navigate to the file and select “Open”)
+
+If you opened the file in Numbers:
+
+1.  Go to “File” -&gt; “Export To” -&gt; CSV
+2.  Check the box that says “Create a file for every table”. You are
+    going to create a CSV file for every sheet (table) in the file. You
+    will be asked to name the folder all the CSV files will be saved
+    in - pick something sensible!
+3.  Once saved, exit the numbers file.
+4.  Copy the CSV file for the “CTD all years” sheet to your labs folder
+    directory.
+5.  Open the csv file you just created.
 
 Once you’ve opened the CSV file 5. Combine the information in the first
 two rows into the top row. Delete the 2nd row and remove the notes that
@@ -65,14 +72,28 @@ row as “headers” or column names.
 library("tidyverse")
 ```
 
-    ## -- Attaching packages ------------ tidyverse 1.3.0 --
+    ## Warning: package 'tidyverse' was built under R version 4.0.5
 
-    ## v ggplot2 3.3.2     v purrr   0.3.4
-    ## v tibble  3.0.3     v dplyr   1.0.2
-    ## v tidyr   1.1.2     v stringr 1.4.0
-    ## v readr   1.3.1     v forcats 0.5.0
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 
-    ## -- Conflicts --------------- tidyverse_conflicts() --
+    ## v ggplot2 3.3.5     v purrr   0.3.4
+    ## v tibble  3.1.4     v dplyr   1.0.7
+    ## v tidyr   1.1.4     v stringr 1.4.0
+    ## v readr   2.0.2     v forcats 0.5.1
+
+    ## Warning: package 'ggplot2' was built under R version 4.0.5
+
+    ## Warning: package 'tibble' was built under R version 4.0.5
+
+    ## Warning: package 'tidyr' was built under R version 4.0.5
+
+    ## Warning: package 'readr' was built under R version 4.0.5
+
+    ## Warning: package 'dplyr' was built under R version 4.0.5
+
+    ## Warning: package 'forcats' was built under R version 4.0.5
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 

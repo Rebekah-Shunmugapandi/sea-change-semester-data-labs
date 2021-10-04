@@ -1,8 +1,8 @@
 ---
 title: "Lab 2 B: Introduction to working with oceanographic data"
 output: 
-  github_document: default
   html_notebook: default
+  github_document: default
 ---
 
 # Lab Assignment
@@ -27,11 +27,13 @@ We all have a copy of the DaRTS data. This is a large Excel file, with lots of d
 2. Go to the "CTD all years" sheet
 
 If you opened the file in Excel:
-3. Go to "File" -> "Save As" and select to save the file as a "CSV (Comma delimited)" file named DaRTS_CTD_data (selecting "yes"" to the windows that pop up)
-4. Exit the Excel file (selecting "no" you don't want to save changes if asked.) 
-5. Open the csv file you just created in Excel (the easiest way to do this is open Excel, then do "File" -> "Open" -> "Browse", then navigate to the file and select "Open")
+
+1. Go to "File" -> "Save As" and select to save the file as a "CSV (Comma delimited)" file named DaRTS_CTD_data (selecting "yes"" to the windows that pop up)
+2. Exit the Excel file (selecting "no" you don't want to save changes if asked.) 
+3. Open the csv file you just created in Excel (the easiest way to do this is open Excel, then do "File" -> "Open" -> "Browse", then navigate to the file and select "Open")
 
 If you opened the file in Numbers:
+
 1. Go to "File" -> "Export To" -> CSV
 2. Check the box that says "Create a file for every table". You are going to create a CSV file for every sheet (table) in the file. You will be asked to name the folder all the CSV files will be saved in - pick something sensible!
 3. Once saved, exit the numbers file.
@@ -39,7 +41,8 @@ If you opened the file in Numbers:
 5. Open the csv file you just created.
 
 Once you've opened the CSV file
-5. Combine the information in the first two rows into the top row. Delete the 2nd row and remove the notes that are to the right hand side of the data
+
+1. Combine the information in the first two rows into the top row. Delete the 2nd row and remove the notes that are to the right hand side of the data
 6. Remove units (and spaces) from column names, change "Beam" to "BeamC" and the last two columns to "O2Conc" and "O2Saturation"
 7. Save and close the csv file.
 

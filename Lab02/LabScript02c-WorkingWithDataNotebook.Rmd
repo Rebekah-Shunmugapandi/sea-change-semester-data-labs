@@ -1,8 +1,8 @@
 ---
 title: "Lab 2 C: Working with Oceanographic Data in R Markdown"
 output: 
-  github_document: default
   html_notebook: default
+  github_document: default
 ---
 
 # R Markdown
@@ -36,13 +36,17 @@ There's lots of information online about R Markdown, check out the [RStudio R Ma
 
 Create an R Notebook which imports the DaRTS CTD data, and produces the 3 following figures:
 
-1) A temperature profile for Station 1 from the Cruise on Sept 11th 2012.
-*Hint:* you'll need to **filter** your data frame.
+1. A temperature profile for Station 1 from the Cruise on Sept 11th 2012.
 
-2) Temperature profiles for all the Stations from the Cruise on Sept 11th 2012, with all profiles on the same plot.
-*Hint:* you'll need to convert the station numbers to **factors**.
+    *Hint:* you'll need to **filter** your data frame. Check out [this lesson from the Data Carpentry R ecology course](https://datacarpentry.org/R-ecology-lesson/03-dplyr.html#Selecting_columns_and_filtering_rows) for more information on data frame manipulation.
 
-3) Profiles from all the stations for a cruise and variable of your choice.
+2. Temperature profiles for all the Stations from the Cruise on Sept 11th 2012, with all profiles on the same plot.
+
+    *Hint:* you'll need to convert the station numbers to **factors**. Check out [this lesson from the Data Carpentry R ecology course](https://datacarpentry.org/R-ecology-lesson/02-starting-with-data.html#Factors) for more information on factors.
+
+3. Profiles from all the stations for a cruise and variable of your choice.
+
+
 
 Label all your axes and include the units.
 

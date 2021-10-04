@@ -133,6 +133,24 @@ the lines and pressing `Ctrl + Enter`.
 
 Save the script regularly!
 
+# Tips and Resources
+
+Online book:
+
+[R for Data Science](https://r4ds.had.co.nz/). Uses the tidyverse
+packages
+
+A selection of beginner R courses from Data Carpentry and Software
+Carpentry:
+
+[R ecology
+lesson](https://datacarpentry.org/R-ecology-lesson/index.html)
+
+[R novice gapminder](http://swcarpentry.github.io/r-novice-gapminder/)
+
+[R novice
+inflammation](http://swcarpentry.github.io/r-novice-inflammation/)
+
 # R Markdown
 
 **This section is for those already familiar with R, but I’m including
