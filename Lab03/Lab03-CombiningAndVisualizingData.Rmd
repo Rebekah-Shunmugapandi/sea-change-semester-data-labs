@@ -1,0 +1,102 @@
+---
+title: "Lab 3: Combining and Visualizing Data Sets"
+output: html_notebook
+---
+
+In this lab we are going to 
+
+1. Combine the discrete and CTD data into one data set
+2. Visualize the data
+
+# Formatting Data
+
+Last day, we created a CSV file with all the CTD data from `DaRTS_cruise_data_2012-2020 - 20201103.xlsx`. Before combining our CTD data with the discrete data, we need to create a CSV file with the discrete data.
+
+1. Open `DaRTS_cruise_data_2012-2020 – 20201103.xlsx` (the full data set file) in Excel
+2. Go to the "Depth Discrete Data" sheet
+1. Go to "File" -> "Save As" and select to save the file as a "CSV (Comma delimited)" file named DaRTS_discrete_data (selecting "yes"" to the windows that pop up)
+2. Exit the Excel file (selecting "no" you don't want to save changes if asked) 
+3. Open the csv file you just created in Excel (the easiest way to do this is open Excel, then do "File" -> "Open" -> "Browse", then navigate to the file and select "Open")
+
+Once you've opened the CSV file
+
+1. Combine the information in the first three rows into the one row by replacing the spaces, parentheses and forward slashes with underscores
+2. Delete the extra rows at the top of the sheet
+2. Change the dates `10/1/2013 and 10/4/2013` to `10/1/2013`
+3. Press CTRL-F on Windows, or the Command-F on a Mac, to bring up the “Find and Replace” window.
+4. Go to the Replace tab, enter “Cruise” in the “Find What” box and nothing in the “Replace with” box, hit “Replace all”
+5. Repeat the previous step for the word “BLOS” and close the window
+6. Delete the rows with “Pier” as a Station value (only occur in 2012)
+7. Rename the column “Cruise ID” to “Cruise”
+7. Save and close the CSV file.
+
+# Importing the data sets
+
+Now we have our two data sets saved as separate CSV files. Let's load each of them into R. But first... we need to start our R session by
+
+1. Setting our working directory
+2. Importing the packages we need for today
+
+```{r}
+setwd("C:/Users/cmitchell/Documents/SeaChangeSemester/2021/Labs/sea-change-semester-data-labs/Lab03/")
+
+library(dplyr)
+library(ggplot2)
+```
+
+Ok, so now we are ready to import our data sets. We are going to load each one into a separate data frame:
+
+```{r}
+ctdData <- read.csv('DaRTS_CTD_data.csv')
+discreteData <- read.csv('DaRTS_discrete_data.csv')
+```
+
+# Combining data sets
+
+Often you have two different data sets that you would like to combine. For example, matching the discrete data to the CTD data from the DaRTS data sets.
+
+Typically, we will want to match the data based on key identifying each information: the cruise date, the station number and depth. For the DaRTS data, the different cruises are identified by the date. And, depending on your exact end goal / question, we'll need to think a bit carefully about how we want to match by depth (for example are you matching discrete to CTD data, or integrated data to discrete data, etc).
+
+## Dates
+
+We know one of our key identifying pieces of information is date. So let's take a closer look at the dates in each of our data sets.
+
+First, let's pull out just the dates column:
+
+```{r}
+# one way
+ctdDates <- ctdData$Date
+
+# another way:
+ctdDates <- ctdData[['Date']]
+
+# and the discrete dates
+discreteDates <- discreteData$Date
+```
+
+In the above two ways of pulling out the dates column we ended up with a vector object. 
+
+You can also pull out the dates column and have it as a 1 column data frame:
+
+```{r}
+ctdDates_df <- ctdData['Date']
+```
+
+
+What format are these dates in? You can check by manually opening the two data frames (`ctdData` and `discreteData`) and looking at the Dates column (i.e. double click on the data frames in the Environment Panel). Or we can check using R:
+
+```{r}
+ctdDates[1]
+```
+
+What type of data is this? A number? 
+```{r}
+typeof(ctdDates[1])
+```
+What about the discrete data dates?
+```{r}
+discreteDates[1]
+typeof(discreteDates[1])
+```
+
+

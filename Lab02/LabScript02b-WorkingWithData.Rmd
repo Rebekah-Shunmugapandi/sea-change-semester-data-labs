@@ -182,4 +182,3 @@ And finally - let's save this plot!
 ```{r}
 ggsave('temperature profiles for all stations from 20120911.png')
 ```
-
