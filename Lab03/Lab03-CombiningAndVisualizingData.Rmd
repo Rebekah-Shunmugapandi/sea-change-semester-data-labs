@@ -93,10 +93,19 @@ What type of data is this? A number?
 ```{r}
 typeof(ctdDates[1])
 ```
+Numbers that do not contain decimal values have a data type as an integer. 
+
 What about the discrete data dates?
 ```{r}
 discreteDates[1]
 typeof(discreteDates[1])
 ```
 
+A character can be a letter/number or a combination of letters and/or numbers enclosed by quotes. 
+
+So in each case, the dates are different formats and different data types. Let's make them the same format and data type - this will make things much easier for matching the discrete and CTD data.
+
+R provides a number of ways to format dates values into human-friendly time strings.
+
+(Dates class: integer days since some start date) and POSIX class (real number of seconds since some start time) 
 
