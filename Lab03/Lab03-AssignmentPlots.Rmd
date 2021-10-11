@@ -1,0 +1,119 @@
+---
+title: "Lab 3: Assignment Plots"
+output: 
+  html_notebook: default
+  github_document: default
+---
+
+1. What is the overall change year-on-year? (Hint: plot the temperature distribution for each year as a boxplot) 
+2. What is the mean seasonal temperature cycle within a year? 
+3. What is the seasonal change at Station 1? Show each year in a different color.
+4. What is the seasonal change in temperature at all stations during 2016?
+
+
+# Initializing
+
+```{r}
+setwd("C:/Users/cmitchell/Documents/SeaChangeSemester/2021/Labs/sea-change-semester-data-labs/Lab03/")
+
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+```
+
+# Importing data sets
+
+```{r}
+ctdData <- read.csv('DaRTS_CTD_data.csv')
+discreteData <- read.csv('DaRTS_discrete_data.csv')
+```
+
+# Data wrangling
+
+## Dates
+
+```{r}
+ctdData <- mutate(ctdData, Date = ymd(ctdData$Date))
+
+discreteData <- mutate(discreteData, Date = mdy(discreteData$Date))
+
+ctdData <- ctdData %>% 
+  mutate(year = year(ctdData$Date),
+         month = month(ctdData$Date),
+         day = day(ctdData$Date),
+         doy = yday(ctdData$Date))
+
+discreteData <- discreteData %>% 
+  mutate(year = year(discreteData$Date),
+         month = month(discreteData$Date),
+         day = day(discreteData$Date),
+         doy = yday(discreteData$Date))
+```
+
+## Depths
+
+```{r}
+ctdData <- ctdData %>% mutate(Depth_m = round(ctdData$Depth_m))
+
+ctdDataBinned <- ctdData %>% 
+  group_by(Date, Station, Depth_m) %>% 
+  summarize_all(mean, na.rm = TRUE)
+```
+
+# Plotting
+
+Surface data needed for plotting
+
+```{r}
+surfaceData <- combinedData %>%
+  filter(Depth_m == 2)
+```
+
+## Plot 1
+
+```{r}
+ggplot(surfaceData, 
+       aes(x=factor(year), y= Temperature_C)) +
+  geom_boxplot()
+```
+
+## Plot 2
+
+```{r, message=FALSE, results = "hide"}
+surfaceData %>% group_by(doy) %>%
+  summarize_all(mean) %>%
+  ggplot(aes(x=doy, y= Temperature_C)) +
+  geom_point() +
+  xlim(245,325)
+```
+
+## Plot 3
+
+```{r}
+surfaceData %>% filter(Station == 1) %>%
+  ggplot(aes(x=doy, y= Temperature_C,
+             color = factor(year))) +
+  geom_point() +
+  geom_line() +
+  xlim(245,325)
+```
+
+## Plot 4
+
+```{r}
+surfaceData %>% filter(year == 2016) %>%
+  ggplot(aes(x=doy, y=Temperature_C,
+             color = factor(Station))) +
+  geom_point() +
+  geom_line()
+```
+
+
+```{r}
+surfaceData %>% filter(year == 2016) %>%
+  ggplot(aes(x=doy, y= Station,
+             z = Temperature_C)) +
+  geom_contour_filled() +
+  geom_point() +
+  labs(title = 'temperature (C)')
+```
