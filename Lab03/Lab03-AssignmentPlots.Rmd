@@ -1,8 +1,9 @@
 ---
 title: "Lab 3: Assignment Plots"
 output: 
-  html_notebook: default
   github_document: default
+  html_notebook: default
+always_allow_html: true
 ---
 
 1. What is the overall change year-on-year? (Hint: plot the temperature distribution for each year as a boxplot) 
@@ -58,6 +59,13 @@ ctdData <- ctdData %>% mutate(Depth_m = round(ctdData$Depth_m))
 ctdDataBinned <- ctdData %>% 
   group_by(Date, Station, Depth_m) %>% 
   summarize_all(mean, na.rm = TRUE)
+```
+
+## Combining datasets
+
+```{r}
+combinedData <- ctdDataBinned %>%
+  full_join(discreteData)
 ```
 
 # Plotting
