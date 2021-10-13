@@ -1019,9 +1019,9 @@ ggplot(surfaceData,
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
 
 This still isn’t great at looking at the year-on-year change. What we
-can do is create a box and whiskers plot for every year to show the
-distribution in each year. Here, we want to treat the year as a factor,
-rather than a regular number:
+can do is create a boxplot for every year to show the distribution in
+each year. Here, we want to treat the year as a factor, rather than a
+regular number:
 
 ``` r
 ggplot(surfaceData, 
@@ -1032,6 +1032,16 @@ ggplot(surfaceData,
     ## Warning: Removed 99 rows containing non-finite values (stat_boxplot).
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+
+##### Boxplot explanation
+
+The following diagram shows what the different parts of a boxplot made
+with `geom_boxplot()` represent. Note, the convention for the box is
+consistent, but often different programming languages, software, or even
+research field, have different conventions for what the whiskers
+represent.
+
+![](boxplot_explanation.png)<!-- -->
 
 #### 2) What is the mean change within a year?
 
@@ -1045,7 +1055,7 @@ ggplot(surfaceData, aes(x=doy, y= PicoPlankton_Conc_cells_ml)) +
 
     ## Warning: Removed 99 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
 Let’s change the x-limits:
 
@@ -1057,7 +1067,7 @@ ggplot(surfaceData, aes(x=doy, y= PicoPlankton_Conc_cells_ml)) +
 
     ## Warning: Removed 104 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
 
 The final step is to calculate and plot the mean seasonal cycle. Note,
 the following step will give lots of warnings because the latitude and
@@ -1307,7 +1317,7 @@ surfaceData %>% group_by(doy) %>%
 
     ## Warning: Removed 41 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
 
 #### 3) What is the seasonal change at Station 1?
 
@@ -1323,7 +1333,7 @@ surfaceData %>% filter(Station == 1) %>%
 
     ## Warning: Removed 35 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
 
 Let’s color each point by the year.
 
@@ -1340,7 +1350,7 @@ surfaceData %>% filter(Station == 1) %>%
 
     ## Warning: Removed 31 row(s) containing missing values (geom_path).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
 
 #### 4) What is the seasonal change at all stations during 2016?
 
@@ -1356,7 +1366,7 @@ surfaceData %>% filter(year == 2016) %>%
 
     ## Warning: Removed 1 row(s) containing missing values (geom_path).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
 
 Another way to plot this is with a contour plot
 
@@ -1371,7 +1381,7 @@ surfaceData %>% filter(year == 2016) %>%
 
     ## Warning: Removed 1 rows containing non-finite values (stat_contour_filled).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
 
 # Assignment
 
