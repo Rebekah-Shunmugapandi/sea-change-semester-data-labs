@@ -1,12 +1,95 @@
 Lab 3: Combining and Visualizing Data Sets
 ================
 
-In this lab we are going to
+# Lab Outcomes
 
 1.  Combine the discrete and CTD data into one data set
-2.  Visualize the data
+2.  Visualize the data in a few different ways.
 
-# Formatting Data
+# How to approach a computational research question
+
+## 1. Start with a question
+
+When starting a research project, we often start with a great question,
+e.g.
+
+**How does picoplankton concentration change with temperature?**
+
+But, before we can even answer that question, we have to think about how
+we are going to *wrangle* our data into a form that makes it *easy* to
+answer that question.
+
+In this case, we are going to have to combine data from two different
+datasets: the discrete data and the CTD data from the DaRTS data.
+
+There are multiple ways to merge the datasets depending on the exact
+combination of variables you want e.g. do you want all the stations
+and/or all the depths and/or only one station and/or multiple years,
+etc.
+
+To figure out the way to do the merge, we need to break down the process
+into the most basic/small steps. This is good practice for any kind of
+code development: breaking down your task into discrete, bitesize
+bundles. Think about building a robot to make a sandwich. You couldn’t
+just code “make a sandwich”, you’d need to break it down into steps,
+like a recipe e.g. go to the cupboard, take out the bread, put it on the
+table, etc. Some of those steps may seem obvious to you, but it wouldn’t
+be to a robot.
+
+## 2. ***How*** are you going to answer your question?
+
+Here, we started with the question:
+
+**How does picoplankton concentration change with temperature?**
+
+Next, we need to think about ***how*** to answer this question
+i.e. ***what form does our data need to be in to answer this
+question?***
+
+In the case of picoplankton concentration and temperature, we can
+envision making a graph with picoplankton concentration on the x-axis,
+and temperature on the y-axis. So we need to make a table of data where
+we have columns with identifying information (e.g. cruise, date, station
+number, depth), the picoplankton concentration and the temperature.
+Then, from that data table (or `data frame` in R talk) we can plot our
+data.
+
+## 3. ***What*** general data formatting steps do you need to take?
+
+We’ve decided we need a dataframe that includes some type of identifying
+information, plus picoplankton concentration and temperature. ***What***
+do we need to do to our data to get it into that form?
+
+We need to match the discrete and CTD data based on key identifying
+information. In this case, that information is:
+
+1.  The cruise date (for the DaRTS data, the different cruises are
+    identified by the date),
+2.  The station number,
+3.  Depth (depending on your exact end goal / question, you’ll need to
+    think a bit carefully about how we want to match by depth).
+
+## 4. **Make a step-by-step plan**
+
+With the above information, we can make a step-by-step plan for the data
+*wrangling* (or formatting) that we need to do. Sometimes one of these
+steps ends up getting broken down into even more steps at a later point
+when you realise something may not be as straightforward as you first
+thought.
+
+**Step-by-step plan:**
+
+1.  Import CTD data from csv
+2.  Make discrete data csv
+3.  Import discrete data from csv
+4.  Check and reformat dates in each dataset if necessary
+5.  Check and reformat depths in each dataset if necessary
+6.  Combine (merge) the discrete and CTD data
+7.  Make plot of picoplankton concentration vs temperature
+
+Now we have our plan, we can start doing it!
+
+# Make discrete data CSV file
 
 Last day, we created a CSV file with all the CTD data from
 `DaRTS_cruise_data_2012-2020 - 20201103.xlsx`. Before combining our CTD
@@ -27,19 +110,22 @@ discrete data.
 
 Once you’ve opened the CSV file
 
-1.  Combine the information in the first three rows into the one row by
+1.  Delete the second PicoPlankton Conc column
+2.  Combine the information in the first three rows into the one row by
     replacing the spaces, parentheses and forward slashes with
     underscores
-2.  Delete the extra rows at the top of the sheet
-3.  Change the dates `10/1/2013 and 10/4/2013` to `10/1/2013`
-4.  Press CTRL-F on Windows, or the Command-F on a Mac, to bring up the
+3.  Delete the extra rows at the top of the sheet
+4.  Change the dates `10/1/2013 and 10/4/2013` to `10/1/2013`
+5.  Press CTRL-F on Windows, or the Command-F on a Mac, to bring up the
     “Find and Replace” window.
-5.  Go to the Replace tab, enter “Cruise” in the “Find What” box and
+6.  Go to the Replace tab, enter “Cruise” in the “Find What” box and
     nothing in the “Replace with” box, hit “Replace all”
-6.  Repeat the previous step for the word “BLOS” and close the window
-7.  Delete the rows with “Pier” as a Station value (only occur in 2012)
-8.  Rename the column “Cruise ID” to “Cruise”
-9.  Save and close the CSV file.
+7.  Repeat the previous step for the word “NA”
+8.  Repeat the previous step for the word “N/A”
+9.  Repeat the previous step for the word “BLOS” and close the window
+10. Delete the rows with “Pier” as a Station value (only occur in 2012)
+11. Rename the blank column (i.e. the 2nd column) to “Cruise”
+12. Save and close the CSV file.
 
 # Importing the data sets
 
@@ -93,59 +179,9 @@ discreteData <- read.csv('DaRTS_discrete_data.csv')
 
 # Combining data sets
 
-When starting a research project, we often start with a great question,
-e.g.
-
-**How does picoplankton concentration change with temperature?**
-
-But, before we can even answer that question, we have to think about how
-we are going to *wrangle* our data into a form that makes it *easy* to
-answer that question.
-
-In this case, we are going to have to combine data from two different
-datasets: the discrete data and the CTD data from the DaRTS data.
-
-There are multiple ways to merge the datasets depending on the exact
-combination of variables you want e.g. do you want all the stations
-and/or all the depths and/or only one station and/or multiple years,
-etc.
-
-To figure out the way to do the merge, we need to break down the process
-into the most basic/small steps. This is good practice for any kind of
-code development: breaking down your task into discrete, bitesize
-bundles. Think about building a robot to make a sandwich. You couldn’t
-just code “make a sandwich”, you’d need to break it down into steps,
-like a recipe e.g. go to the cupboard, take out the bread, put it on the
-table, etc. Some of those steps may seem obvious to you, but it wouldn’t
-be to a robot.
-
-Here, we started with a question:
-
-**How does picoplankton concentration change with temperature?**
-
-Next, we need to think about ***how*** to answer this question
-i.e. ***what form does our data need to be in to answer this
-question?***
-
-In the case of picoplankton concentration and temperature, we can
-envision making a graph with picoplankton concentration on the x-axis,
-and temperature on the y-axis. So we need to make a table of data where
-we have columns with identifying information (e.g. cruise, date, station
-number, depth), the picoplankton concentration and the temperature.
-Then, from that data table (or `data frame` in R talk) we can plot our
-data.
-
-OK - so we need to match the discrete and CTD data based on key
-identifying information. In this case, that information is:
-
-1.  The cruise date (for the DaRTS data, the different cruises are
-    identified by the date),
-2.  The station number,
-3.  Depth (depending on your exact end goal / question, you’ll need to
-    think a bit carefully about how we want to match by depth).
-
-Now we have identified the important columns to merge on, we need to
-check the format of those data in each of our datasets.
+In our plan, we identified the important columns to merge on (cruise,
+date and depth), and we decided we needed to check the format of the
+date and depth data in each of our datasets.
 
 ## Dates
 
@@ -478,7 +514,8 @@ you can merge the dataframes.
 
 Mutating joins allow you to combine variables from multiple tables.
 There are four types of mutating join, which differ in their behaviour
-when a match is not found. We’ll illustrate each with an example:
+when a match is not found. We’ll illustrate each with an example. Let’s
+start by making two dataframes:
 
 ``` r
 df1 <- data.frame(x = c(1, 2), y = 2:1)
@@ -908,7 +945,8 @@ ggplot(data = combinedData,
     ## Warning: Removed 8046 rows containing missing values (geom_point).
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
-There is a lot of data bunched up together at the low picoplankton cell
+
+There are a lot of data bunched up together at the low picoplankton cell
 counts, and not so much at the higher concentrations. This kind of
 distribution is very common in the natural world. When analysing data
 with this type of distribution, we look at it on a log scale:
@@ -923,6 +961,7 @@ ggplot(data = combinedData,
     ## Warning: Removed 8046 rows containing missing values (geom_point).
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+
 Here, we’ve got data more normally distributed across our x and y axes.
 
 In the next lab we’re going to go over how to quantify this kind of
@@ -938,7 +977,7 @@ few plots showing change over different parameters.
 
 ### How has surface picoplankton concentration changed over the time series?
 
-We need to filter pull out the surface measurements for each
+We need to pull out (i.e. *filter*) the surface measurements for each
 picoplankton.
 
 The surface discrete measurements were always taken at 2 m, so we need
@@ -965,7 +1004,7 @@ It’s a bit hard to tell what is going on here.
 How can we make this easier to see what’s happening? Well, it depends on
 what our exact question is e.g. 
 
-#### What is the overall change year-on-year?
+#### 1) What is the overall change year-on-year?
 
 Here, we want to group the data by year. Let’s put year on the x-axis:
 
@@ -978,6 +1017,7 @@ ggplot(surfaceData,
     ## Warning: Removed 99 rows containing missing values (geom_point).
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+
 This still isn’t great at looking at the year-on-year change. What we
 can do is create a box and whiskers plot for every year to show the
 distribution in each year. Here, we want to treat the year as a factor,
@@ -993,7 +1033,7 @@ ggplot(surfaceData,
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
-#### What is the mean change within a year?
+#### 2) What is the mean change within a year?
 
 In this case, if we plot the data with day of year on the x-axis, then
 we can see the yearly variation
@@ -1006,6 +1046,7 @@ ggplot(surfaceData, aes(x=doy, y= PicoPlankton_Conc_cells_ml)) +
     ## Warning: Removed 99 rows containing missing values (geom_point).
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+
 Let’s change the x-limits:
 
 ``` r
@@ -1018,7 +1059,11 @@ ggplot(surfaceData, aes(x=doy, y= PicoPlankton_Conc_cells_ml)) +
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
-The final step is to calculate and plot the mean seasonal cycle:
+The final step is to calculate and plot the mean seasonal cycle. Note,
+the following step will give lots of warnings because the latitude and
+longitude data are stored as characters, not numbers, so when R tries to
+calculate the mean of those columns, it can’t and so assigns the value
+`NA` to those columns. However, it still can for all the other columns.
 
 ``` r
 surfaceData %>% group_by(doy) %>%
@@ -1260,184 +1305,11 @@ surfaceData %>% group_by(doy) %>%
 
     ## Warning in mean.default(Long): argument is not numeric or logical: returning NA
 
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
-    ## Warning in mean.default(Chl_Total_ug_l): argument is not numeric or logical:
-    ## returning NA
-
     ## Warning: Removed 41 rows containing missing values (geom_point).
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
-\#\#\#\# What is the seasonal change at Station 1?
+
+#### 3) What is the seasonal change at Station 1?
 
 Here we need to filter for station 1 data only, then plot by day of year
 as in the previous example.
@@ -1452,6 +1324,7 @@ surfaceData %>% filter(Station == 1) %>%
     ## Warning: Removed 35 rows containing missing values (geom_point).
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
+
 Let’s color each point by the year.
 
 ``` r
@@ -1469,7 +1342,7 @@ surfaceData %>% filter(Station == 1) %>%
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
 
-#### What is the seasonal change at all stations during 2016?
+#### 4) What is the seasonal change at all stations during 2016?
 
 ``` r
 surfaceData %>% filter(year == 2016) %>%
@@ -1484,6 +1357,7 @@ surfaceData %>% filter(year == 2016) %>%
     ## Warning: Removed 1 row(s) containing missing values (geom_path).
 
 ![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
+
 Another way to plot this is with a contour plot
 
 ``` r
