@@ -471,14 +471,14 @@ First, we need to round our depths to the nearest meter, then we can bin
 them.
 
 ``` r
-ctdData <- ctdData %>% mutate(Depth_m = round(ctdData$Depth_m))
+ctdData <- ctdData %>% mutate(Depth = round(ctdData$Depth_m))
 ```
 
 Now for the binning.
 
 ``` r
 ctdDataBinned <- ctdData %>% 
-  group_by(Depth_m) %>% 
+  group_by(Depth) %>% 
   summarize_all(mean)
 ```
 
@@ -497,7 +497,7 @@ the mean on the data that are there.
 
 ``` r
 ctdDataBinned <- ctdData %>% 
-  group_by(Date, Station, Depth_m) %>% 
+  group_by(Date, Station, Depth) %>% 
   summarize_all(mean, na.rm = TRUE)
 ```
 
@@ -923,7 +923,15 @@ combinedData <- ctdDataBinned %>%
   full_join(discreteData)
 ```
 
-    ## Joining, by = c("Date", "Station", "Depth_m", "year", "month", "day", "doy")
+    ## Joining, by = c("Date", "Station", "Depth", "year", "month", "day", "doy")
+
+**Final step is to save our new dataframe as a CSV file.** Then you can
+use this dataset to answer your own questions without having to redo the
+whole lab.
+
+``` r
+write.csv(combinedData,"DaRTS_combined_data.csv")
+```
 
 # Visualizing Datasets
 
@@ -944,7 +952,7 @@ ggplot(data = combinedData,
 
     ## Warning: Removed 8046 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 There are a lot of data bunched up together at the low picoplankton cell
 counts, and not so much at the higher concentrations. This kind of
@@ -960,7 +968,7 @@ ggplot(data = combinedData,
 
     ## Warning: Removed 8046 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
 
 Here, we’ve got data more normally distributed across our x and y axes.
 
@@ -985,7 +993,7 @@ to filter our dataframe for depth values of 2.
 
 ``` r
 surfaceData <- combinedData %>%
-  filter(Depth_m == 2)
+  filter(Depth == 2)
 ```
 
 And now we can plot the data
@@ -997,7 +1005,7 @@ ggplot(surfaceData, aes(x=Date, y= PicoPlankton_Conc_cells_ml)) +
 
     ## Warning: Removed 99 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
 
 It’s a bit hard to tell what is going on here.
 
@@ -1016,7 +1024,7 @@ ggplot(surfaceData,
 
     ## Warning: Removed 99 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
 This still isn’t great at looking at the year-on-year change. What we
 can do is create a boxplot for every year to show the distribution in
@@ -1031,7 +1039,7 @@ ggplot(surfaceData,
 
     ## Warning: Removed 99 rows containing non-finite values (stat_boxplot).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
 ##### Boxplot explanation
 
@@ -1055,7 +1063,7 @@ ggplot(surfaceData, aes(x=doy, y= PicoPlankton_Conc_cells_ml)) +
 
     ## Warning: Removed 99 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
 
 Let’s change the x-limits:
 
@@ -1067,7 +1075,7 @@ ggplot(surfaceData, aes(x=doy, y= PicoPlankton_Conc_cells_ml)) +
 
     ## Warning: Removed 104 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
 
 The final step is to calculate and plot the mean seasonal cycle. Note,
 the following step will give lots of warnings because the latitude and
@@ -1317,7 +1325,7 @@ surfaceData %>% group_by(doy) %>%
 
     ## Warning: Removed 41 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
 
 #### 3) What is the seasonal change at Station 1?
 
@@ -1333,7 +1341,7 @@ surfaceData %>% filter(Station == 1) %>%
 
     ## Warning: Removed 35 rows containing missing values (geom_point).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
 
 Let’s color each point by the year.
 
@@ -1350,7 +1358,7 @@ surfaceData %>% filter(Station == 1) %>%
 
     ## Warning: Removed 31 row(s) containing missing values (geom_path).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
 
 #### 4) What is the seasonal change at all stations during 2016?
 
@@ -1366,7 +1374,7 @@ surfaceData %>% filter(year == 2016) %>%
 
     ## Warning: Removed 1 row(s) containing missing values (geom_path).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
 
 Another way to plot this is with a contour plot
 
@@ -1381,19 +1389,4 @@ surfaceData %>% filter(year == 2016) %>%
 
     ## Warning: Removed 1 rows containing non-finite values (stat_contour_filled).
 
-![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
-
-# Assignment
-
-We’ve been visualizing how surface picoplankton concentration has
-changed over the time series - what about temperature? Make the
-following plots showing how surface temperature has changed over the
-time series (assume the surface depth is 2 m):
-
-1.  What is the overall change year-on-year? (Hint: plot the temperature
-    distribution for each year as a boxplot)
-2.  What is the mean seasonal temperature cycle within a year?
-3.  What is the seasonal change at Station 1? Show each year in a
-    different color.
-4.  What is the seasonal change in temperature at all stations during
-    2016? Show as either a contour or line plot
+![](Lab03-CombiningAndVisualizingData_files/figure-gfm/unnamed-chunk-53-1.png)<!-- -->

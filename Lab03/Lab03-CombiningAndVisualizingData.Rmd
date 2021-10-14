@@ -298,14 +298,14 @@ Here, we're going to make use of pipes too.
 
 First, we need to round our depths to the nearest meter, then we can bin them.
 ```{r}
-ctdData <- ctdData %>% mutate(Depth_m = round(ctdData$Depth_m))
+ctdData <- ctdData %>% mutate(Depth = round(ctdData$Depth_m))
 ```
 
 Now for the binning. 
 
 ```{r}
 ctdDataBinned <- ctdData %>% 
-  group_by(Depth_m) %>% 
+  group_by(Depth) %>% 
   summarize_all(mean)
 ```
 
@@ -315,7 +315,7 @@ What we've actually done is calculated the mean profile for all the CTD data tog
 
 ```{r}
 ctdDataBinned <- ctdData %>% 
-  group_by(Date, Station, Depth_m) %>% 
+  group_by(Date, Station, Depth) %>% 
   summarize_all(mean, na.rm = TRUE)
 ```
 
@@ -407,6 +407,13 @@ Ultimately, we want to look at picoplankton and temperature data, so we're only 
 combinedData <- ctdDataBinned %>%
   full_join(discreteData)
 ```
+**Final step is to save our new dataframe as a CSV file.** Then you can use this dataset to answer your own questions without having to redo the whole lab.
+
+```{r}
+write.csv(combinedData,"DaRTS_combined_data.csv")
+```
+
+
 
 # Visualizing Datasets
 
@@ -451,7 +458,7 @@ The surface discrete measurements were always taken at 2 m, so we need to filter
 
 ```{r}
 surfaceData <- combinedData %>%
-  filter(Depth_m == 2)
+  filter(Depth == 2)
 ```
 
 And now we can plot the data
@@ -559,14 +566,5 @@ surfaceData %>% filter(year == 2016) %>%
   geom_point() +
   labs(title = 'picoplankton conc (cells/ml)')
 ```
-
-# Assignment
-
-We've been visualizing how surface picoplankton concentration has changed over the time series - what about temperature? Make the following plots showing how surface temperature has changed over the time series (assume the surface depth is 2 m):
-
-1. What is the overall change year-on-year? (Hint: plot the temperature distribution for each year as a boxplot) 
-2. What is the mean seasonal temperature cycle within a year? 
-3. What is the seasonal change at Station 1? Show each year in a different color.
-4. What is the seasonal change in temperature at all stations during 2016? Show as either a contour or line plot
 
 

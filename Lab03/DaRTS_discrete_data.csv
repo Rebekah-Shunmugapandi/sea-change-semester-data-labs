@@ -1,4 +1,4 @@
-Date,Cruise,Station,Lat,Long,Depth_m,pH,Alk,SiO4_uM,NO3_2_uM,PO4_uM,NH4_uM,PicoPlankton_Conc_cells_ml,Bacteria_Conc_cell_ml,Viral_Conc _cell_ml,Chl_Total_ug_l,CHL<20um_ug_l,CHL<3um_ug_l,FlowcamBiomass,Cyanobacteria_cells_mL,Picoeukaryotes_cells_mL,noeukaryotes_cells_mL
+Date,Cruise,Station,Lat,Long,Depth,pH,Alk,SiO4_uM,NO3_2_uM,PO4_uM,NH4_uM,PicoPlankton_Conc_cells_ml,Bacteria_Conc_cell_ml,Viral_Conc _cell_ml,Chl_Total_ug_l,CHL<20um_ug_l,CHL<3um_ug_l,FlowcamBiomass,Cyanobacteria_cells_mL,Picoeukaryotes_cells_mL,noeukaryotes_cells_mL
 9/11/2012,1,1,43.54.20 N,69.34.66 W,2,,,,0,0.49,0.05,5618,1.87E+06,4.51E+07,9.119,7.929,0.222,2.24E+05,722,3817,1079
 9/11/2012,1,1,43.54.20 N,69.34.66 W,10,,,,0,0.56,0.02,6299,2.33E+06,4.47E+07,,,,,574,4365,1361
 9/11/2012,1,1,43.54.20 N,69.34.66 W,30,,,,0.86,0.61,0.25,6016,1.74E+06,3.66E+07,,,,,500,3618,1898
