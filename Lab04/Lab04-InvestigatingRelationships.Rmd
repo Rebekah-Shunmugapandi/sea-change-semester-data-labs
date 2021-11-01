@@ -1,8 +1,8 @@
 ---
 title: "Lab 4: Investigating Relationships"
 output: 
-  html_notebook: default
   github_document: default
+  html_notebook: default
 always_allow_html: true
 ---
 
@@ -42,13 +42,12 @@ Scatter plots allow us to quickly understand and visualize relationships.
 ggplot(data = DATA) + 
   geom_point(mapping = aes(x = Temperature_C, y = Fluorescence_mg_m3)) +
   xlab('Temperature (deg C)') +
-  ylab('Fluorescence (mg/m^3)') +
-  xlim(7,18) + ylim(0,12)
+  ylab('Fluorescence (mg/m^3)') 
 ```
 
 ## Log-transformations
 
-In the above figure, we have a lot of fluorescence data below 2.5 mg m$^{-3}$ - in fact, the majority of our data are below that value. These data are approximately *log-normally* distributed. This is typical of a lot of geophysical parameters like fluorescence. Hence, we often plot (& perform statistics on) the log-transformed data, so we can better understand the relationship between the parameters.
+In the above figure, we have a lot of fluorescence data below 2.5 mg m$^{-3}$ - in fact, the majority of our data are below that value. These data are approximately *log-normally* distributed, that is, they have a lot of observations at the lower values, and fewer at the higher values. This is typical of a lot of geophysical parameters like fluorescence. Hence, we often plot (& perform statistics on) the log-transformed data, so we can better understand the relationship between the parameters.
 
 What is the relationship between temperature and log-transformed fluorescence?
 
@@ -91,7 +90,8 @@ Here, we are going to use R to calculate the Pearson's correlation coefficient.
 
 ```{r}
 # create variables for our two parameters of interest
-# NB: we want to the data to be vectors, rather than dataframe columns so we can perform our analysis, hence we need to use the dollar sign, $, to index the DATA dataframe
+# NB: we want to the data to be vectors, rather than dataframe columns so we can 
+# perform our analysis, hence we need to use the dollar sign, $, to index the DATA dataframe
 temp <- DATA$Temperature_C
 fl <- DATA$Fluorescence_mg_m3
 
@@ -115,16 +115,73 @@ The results of the t-test is a t-score (or t-statistic) and p-value. If the p-va
 
 Aside: the t-score and p-value are connected through the t-distribution function. We are not covering those details in this course.
 
-**What about on our log transformed data?**
+#### Example 2b: What about on our log transformed data?
 
-Here, we need to remove the bad data before doing the correlation calculation.
+Here, we need to remove the bad data before doing the correlation calculation. To remove the bad data, we're going to make use of *Booleans* and *logical indexing*. 
+
+### Aside: Logical indexing
+
+In programming, we often need to know if something is true or false. To evaluate is something is true or false, we use Boolean operators, and our resulting data types are called Boolean values. There are only two possible Boolean values: `TRUE` and `FALSE` (in some programming languages, these are represented by 1 ( = `TRUE`) and 0 ( = `FALSE`)).
+
+Booleans are often paired with indexing in a process known as logical indexing. We've actually been doing some indexing already, we've been doing it using some functions that hide the process of indexing, and we've done it ourselves a couple of times, we just didn't give it that name.
+
+Indexing is the process of pulling out a subset of data from a larger group of data. That can be pulling out an individual column from a data frame, like we did in Lab 3 when we were working with the dates:
+
+```{r, eval=FALSE}
+# one way
+DATA$Date
+
+# another way:
+DATA[['Date']]
+
+# another way
+DATA['Date']
+```
+Or indexing can be pulling out one or more elements from a list (or vector, or matrix) - we've done this a couple of times when we wanted to print out just the first 10 depths from our data frame, or the first date in our data frame:
+
+```{r}
+depths <- DATA$Depth
+
+depths[1:10]
+```
+Even the `dplyr` function `filter` (which we've been using to subset our whole data frame based on e.g. a particular year) uses indexing.
+
+But you can also index a list using another list of values e.g. say we want the 5th, 8th, 15th and 30th depth:
+
+```{r}
+# make our list of indices
+ind <- c(5,8,15,30)
+
+# index depth with our indices
+depths[ind]
+
+# index temperature with our indices
+temp[ind]
+```
+
+So what about logical indexing? In logical indexing, our indices are Boolean values i.e. either `TRUE` or `FALSE`. For example, if we want to pull out all the depths less than 10 m:
+
+```{r}
+ind <- depths < 10
+
+# print out the first 50 elements to see what this object looks like
+ind[1:50] 
+
+# Then index the depths object
+depths[ind]
+```
+Here, we've pulled out only the elements in our depths list that have a value of less than 10.
+
+#### Back to Example 2b: what is the correlation coefficient on the log-transformed chl and temperature data?
 
 ```{r}
 templog <- DATA$Temperature_C
 fllog <- log10(DATA$Fluorescence_mg_m3)
 
-# removing the NaNs and Infs
+# removing the NaNs and Infs:
+# 1) make a boolean list of the good values
 nonans <- is.finite(fllog)
+# 2) index temp and fl objects using our boolean list
 tempnonan <- templog[nonans]
 flnonan <- fllog[nonans]
 
@@ -143,7 +200,7 @@ The relationship between two variables can be explained through a simple linear 
 
 ## Best fit line
 
-#### Example: What is the line of best fit between the chlorophyll fluoroescence and temperature?
+#### Example 1: What is the line of best fit between the chlorophyll fluoroescence and temperature?
 
 We need to fit a linear model to our data:
 ```{r, fig.height = 5, fig.width=5}
@@ -176,7 +233,7 @@ slope <- model1$coefficients[2]
 # adding the line to our plot
 ggplot(data = DATA) + 
   geom_point(mapping = aes(x = Temperature_C, y = Fluorescence_mg_m3)) +
-  stat_function(fun = function(x) intercept + slope * x, size = 1, color = 'cyan') +
+  stat_function(fun = function(x) intercept + slope * x, size = 2, color = 'cyan') +
   xlab('Temperature (deg C)') +
   ylab('Fluorescence (mg/m^3)') +
   xlim(7,18) + ylim(0,12)
@@ -195,7 +252,7 @@ slope <- model1$coefficients[2]
 # adding the line to our plot: note we've added the line by three different methods
 ggplot(data = DATA) + 
   geom_point(mapping = aes(x = Temperature_C, y = Fluorescence_mg_m3)) +
-  stat_function(fun = function(x) intercept + slope * x, size = 1, color = 'cyan') +
+  stat_function(fun = function(x) intercept + slope * x, size = 2, color = 'cyan') +
   xlab('Temperature (deg C)') +
   ylab('Fluorescence (mg/m^3)') +
   xlim(7,18) + ylim(0,12) +
@@ -203,7 +260,7 @@ ggplot(data = DATA) +
 
 ```
 
-**What about on our log-transformed data?**
+#### Example 2: What is the line of best fit between the log transformed chlorophyll fluoroescence and temperature?
 
 ```{r, fig.height = 5, fig.width=5}
 # fitting a linear model between the two variables
@@ -219,11 +276,16 @@ ggplot(data = DATA) +
   geom_abline(slope=slopeLog,intercept=interceptLog, size=3, color = "darkblue") +
   xlab('Temperature (deg C)') +
   ylab('Fluorescence (mg/m^3)') +
-  scale_y_log10(limits = c(0.07,13)) +
-  annotate("text", x = 10, y = 12.8, label = paste("Temp = ", format(slopeLog, digits=3), " log10(Fluor) + (", format(interceptLog,digits=3), ")", sep="")) # let's add the equation to the figure
+  scale_y_log10() +
+  annotate("text", x = 8, y = 15, label = paste("Temp = ", format(slopeLog, digits=3), " log10(Fluor) + (", format(interceptLog,digits=3), ")", sep="")) # let's add the equation to the figure
 ```
+In this case, the line doesn't go through the main cloud of data - why might this be?
 
-##### **Important side note about linear regressions**
+#### **How do linear regressions work?**
+
+Linear regressions typically use a least squares method to determine the best fit line. The method aims to minimize the sum of the squares of the distance between all the data points and the fitted line (the *residuals*). In our example of fluorescence and temperature, there are a number of points that have low temperature and relatively high fluorescence values i.e. the fall outside of the main cloud of data points. This group of points results in a regression line away from the main cloud of data. If your data looks similar to this, it's a good idea to look at the individual clusters of data points and see what characteristics are similar about them and decide whether they can be safely removed from your analysis. **But remember: you can't remove data without a good reason.** If you do remove some of the data, you need to make it clear in the presentation of your work ***why*** you did it. 
+
+#### **Important side note about linear regressions**
 
 An important point to note is what makes a regression a *linear* regression. **It is not that you fit a straight line through your data.** We could in fact fit a quadratic or higher order polynomials to our data using linear regression techniques (see below): 
 
@@ -250,9 +312,7 @@ ggplot(data = DATA) +
 
 What makes it a *linear* regression is the coefficients of the fit are linear. In the above plot, the equation for the quadratic is given by $y=0.036x^2-0.490x+1.700$. This equation is non-linear in the $x$-variable, but linear in the coefficients. A non-linear example is a Michaelis-Menten curve which is used to describe phytoplankton nutrient uptake. It has an equation of the form $y = \frac{\alpha x}{\beta + x}$.
 
-#### **How do linear regressions work?**
 
-Linear regressions typically use a least squares method to determine the best fit line. The method aims to minimise the sum of the squares of the distance between all the data points and the fitted line (the *residuals*). 
 
 ## Summary statistics
 
@@ -266,7 +326,7 @@ There are a variety of different statistics which are used to describe how well 
 
 4. Residual standard error or the root mean squared error : in R, these are equivalent. The *standard error* is defined to show how far the sample mean is from the population mean. It is calculated by dividing the *standard deviation* by the square root of the number of data points. The *standard deviation* is a  measure of how much the data points differ from the mean. For a linear regression, the *root mean square error* is estimated by taking the square root of the mean of the residuals-squared (or put another way, by dividing the square of the residuals by the number of data points, and taking the square root). By virtue of the least squares fitting procedure used in the linear regression, the mean of the residuals are zero. Hence, mathematically, the root mean square error and the residual standard error are the same, and in this case give an overall idea of how close the data points are to the fitted line.
 
-#### Example: Does the straight line, quadatratic or 3rd order polynomial describe the relationship between chlorophyll fluorescence and temperature best?
+#### Example: Does the straight line, quadatratic or the log relationship describe the relationship between chlorophyll fluorescence and temperature best?
 
 Let's print the summary statistics from each of our models (or linear regressions)
 
@@ -285,7 +345,9 @@ What we see here is
 summary(model2)
 summary(modelLog)
 ```
-If we want to pull the different statistics out of these summaries programmatically we can:
+### Aside: Extracting the summary statistics into individual objects
+
+To compare our results between the different models, it can be easier to have all the relevant statistics together in one data frame. To do this, we need to pull the different statistics out of the summaries programmatically:
 ```{r}
 # assigning summaries to variables
 sum_model1 <- summary(model1)
@@ -360,3 +422,21 @@ modelLog_tsdoy <- lm(flnonan ~ tempnonan + salnonan +doynonan)
 summary(modelLog_tsdoy)
 ```
 The R$^2$ values, and reduced the residual standard error have improved even more when the day of year is included in our model.
+
+# Assignment
+
+Write up your answers to the following questions in a document and email it to me (cmitchell@bigelow.org) by Nov 11th. Please also send me any R code (you can attach an R script to an email).
+
+1. Correlation coefficients
+   a. What is the correlation coefficient for two variables of your choice?
+   b. What is the correlation coefficient when one or both (your choice) of your variables are log-transformed?
+   c. Which set of variables are more highly correlated? The log-transformed data or the regular data? Justify your answer in 1 sentence.
+
+2. Linear regressions 
+   a. Calculate the relationship between your two variables using a linear model. What are the summary statistics of this model? (You can copy and paste the `summary` output of the model into your write-up.)
+   b. Calculate the relationship using a linear model on the log-transformed data. What are the summary statistics of this model? (You can copy and paste the `summary` output of the model into your write-up.)
+   c. Which model describes your data the best? The model on the log-transformed data or the regular data? Justify your answer in 1 - 2 sentences.
+
+3. Include a third variable in your analysis and calculate the relationship between your three variables using a linear model. You can choose whether or not to log-transform any of your variables. What are the summary statistics of this model? (You can copy and paste the `summary` output of the model into your write-up.)
+
+
