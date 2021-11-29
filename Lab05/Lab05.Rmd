@@ -1,17 +1,20 @@
 ---
 title: "Visualizing change: Plotting relationships between multiple variables"
 output: 
+  github_document: default
   html_notebook: default
+always_allow_html: true
 ---
 
 # Lab Outcomes
 
-WRITE THESE + GITHuB OUTPUT
+1. Use contour and scatter plots to visualize three variables.
+2. Interpolate data between measured values to make heatmaps for visualizing change.
 
 This lab is adapted from a R workshop hosted at Bigelow. For reference, that R workshop can be found on GitHub at: [cathmmitchell/plottingOceanDataWithR](https://github.com/cathmmitchell/plottingOceanDataWithR/blob/main/plottingOceanDataWithR.md)
 
 
-Today we are going to use the `DaRTS_combined_data.csv` file that we made last day. 
+Today we are going to use the `DaRTS_combined_data.csv` file that we made in Lab 3. 
 
 # Introduction
 
@@ -87,7 +90,7 @@ chldata2016 <- DATA %>% filter(year == 2016, Depth == 1)
 
 ## Visualizing data using a contour plot
 
-We can visualize this type of data with a contour plot (using `geom_contour_filled()`). In this case, our argument to the `labs()` function for the legend (color bar) is going to be `fill`.
+We can visualize this type of data with a contour plot (using `geom_contour_filled()`). We want to label the color bar, so in this case, our argument to the `labs()` function for the legend (color bar) is going to be `fill`.
 
 ```{r, fig.height = 5, fig.width=8}
 ggplot(chldata2016,aes(x=Date,y=Station)) +
@@ -96,9 +99,9 @@ ggplot(chldata2016,aes(x=Date,y=Station)) +
   labs(fill='surface chlorophyll fluorescence (mg m^-3)')
 ```
 
-We can reformat the x-axis dates if we wished - see details in the [Formatting Dates wiki](https://github.com/cathmmitchell/plottingOceanDataWithR/wiki/Formatting-dates). 
+We can reformat the x-axis dates if we wished - see details in the [Formatting Dates wiki](https://github.com/cathmmitchell/plottingOceanDataWithR/wiki/Formatting-dates) that is part of the R Workshop we did at Bigelow. 
 
-We can also change the locations of the x-ticks. How we do this depends on our data type - see some examples in the [x-tick wiki](https://github.com/cathmmitchell/plottingOceanDataWithR/wiki/x-ticks-and-x-tick-labels).
+We can also change the locations of the x-ticks. How we do this depends on our data type - see some examples in the [x-tick wiki](https://github.com/cathmmitchell/plottingOceanDataWithR/wiki/x-ticks-and-x-tick-labels) (also from Bigelow's R Workshop).
 
 In this case, if we know what x-tick positions we want, we could specify them in a call to `scale_x_date()`. Recall to get a list of the cruise dates we can use `unique`:
 
@@ -317,7 +320,7 @@ CruiseDataInterp <- expand.grid(latitude=interpReference$x,
   mutate(fluorescence = as.vector(interpReference$z))
 ```
 
-**Note: Something to be aware of with the above step is if the matrix is flattened row-wise or column-wise. To make sure the flattened matrix elements align with the correct latitude and depth pair, you might need to transpose your matrix first (flip it along the diagonal) `t(interpReference$z)`**
+*Note: Something to be aware of with the above step is if the matrix is flattened row-wise or column-wise. To make sure the flattened matrix elements align with the correct latitude and depth pair, you might need to transpose your matrix first (flip it along the diagonal) `t(interpReference$z)`*
 
 Now we have our data frame - can we plot our data as before?
 
