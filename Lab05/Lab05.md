@@ -563,3 +563,12 @@ We don’t have time to go over functions and for loops, but see [the
 Bigelow R Workshop
 tutorial](https://github.com/cathmmitchell/plottingOceanDataWithR/blob/main/plottingOceanDataWithR.md#functions-and-for-loops-for-creating-multiple-versions-of-figures)
 for a detailed walk-through.
+
+# Sea Change Semester Data Labs GitHub
+
+All the labs from Course 1 are on [Bigelow’s
+GitHub](https://github.com/BigelowLab/sea-change-semester-data-labs) so
+you can access them there any time.
+
+Note if you want to view the lab scripts on GitHub, click on the `.md`
+file within each lab folder (*not the `.Rmd` OR `.html` file*).
